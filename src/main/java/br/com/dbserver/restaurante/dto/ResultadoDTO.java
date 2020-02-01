@@ -1,19 +1,19 @@
 package br.com.dbserver.restaurante.dto;
 
 import br.com.dbserver.restaurante.enumeration.DiaSemana;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 @Data
 @Builder
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class EscolhaDTO {
+@EqualsAndHashCode
+public class ResultadoDTO {
 
-    private Long matricula;
-    private String nome;
+    private String restaurante;
+    @JsonIgnore
     private Long idRestaurante;
-    private String nomeRestaurante;
+    private Long escolha;
     private DiaSemana dia;
-
 }

@@ -5,13 +5,9 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum DiaSemana {
+public enum Mensagem {
 
-    SEGUNDA("Segunda-feira"),
-    TERCA("Terça-feira"),
-    QUARTA("Quarta-feira"),
-    QUINTA("Quinta-feira"),
-    SEXTA("Sexta-feira");
+    ERRO_VALIDACAO_VOTOS("Funcionário informou seu voto mais de vez.");
 
     private String descricao;
 }

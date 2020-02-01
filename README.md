@@ -1,1 +1,1 @@
-## Onde almoçar? o.O
+## Onde almoçar? :thinking:

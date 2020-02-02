@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,30 +17,27 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RestauranteService {
 
-    boolean alterado;
-    List<ResultadoDTO> resultados;
+    public List<ResultadoDTO> escolherRestaurante(List<EscolhaDTO> request) {
 
-    public List<ResultadoDTO> escolherRestaurante(List<EscolhaDTO> request) throws Exception {
+        request = DiaSemanaUtil.validarVotosPorDia(request);
 
-        DiaSemanaUtil.validarVotosPorDia(request);
-
-        resultados = new ArrayList<>();
+        List<ResultadoDTO> resultados = new ArrayList<>();
         Set<Long> idsRestaurante = request.stream().map(dto -> dto.getIdRestaurante()).collect(Collectors.toSet());
 
         log.info("Populando resultados.");
         request.stream().forEach(req -> {
             idsRestaurante.stream().forEach(id -> {
                 if(req.getIdRestaurante().equals(id)) {
-                    resultados = this.montarResultados(resultados, req.getDia(), req.getNomeRestaurante(), id);
+                    this.montarResultados(resultados, req.getDia(), req.getNomeRestaurante(), id);
                 }
             });
         });
 
-        return resultados;
+        return this.tratarResultados(resultados);
     }
 
     private List<ResultadoDTO> montarResultados(List<ResultadoDTO> resultados, DiaSemana diaSemana, String nomeRestaurante, Long idRestaurante) {
-        alterado = false;
+        boolean alterado = false;
         if(resultados.isEmpty()) {
             log.info("Lista vazia: Adicionou.");
             resultados.add(ResultadoDTO.builder().escolha(1L).dia(diaSemana)
@@ -47,13 +45,14 @@ public class RestauranteService {
                     .idRestaurante(idRestaurante)
                     .build());
         } else {
-            resultados.stream().forEach(res -> {
+
+            for (ResultadoDTO res : resultados) {
                 if(diaSemana == res.getDia() && res.getIdRestaurante().equals(idRestaurante)) {
                     log.info("Lista não vazia: Alterou existente.");
                     res.setEscolha(res.getEscolha() + 1L);
                     alterado = true;
                 }
-            });
+            }
 
             if(!alterado) {
                 log.info("Lista não vazia: Adicionou.");
@@ -65,5 +64,51 @@ public class RestauranteService {
         }
 
         return resultados;
+    }
+
+    private List<ResultadoDTO> tratarResultados(List<ResultadoDTO> resultados) {
+
+        List<ResultadoDTO> resultadosTratados = new ArrayList<>();
+
+        List<ResultadoDTO> resSegunda = resultados.stream().filter(resultado -> resultado.getDia() == DiaSemana.SEGUNDA).sorted(Comparator.comparing(ResultadoDTO::getEscolha).reversed()).collect(Collectors.toList());
+        log.info("Escolhas na {}: {}.", DiaSemana.SEGUNDA.getDescricao(), resSegunda.size());
+        resultadosTratados = this.popularRetorno(resultadosTratados, resSegunda);
+
+        List<ResultadoDTO> resTerca = resultados.stream().filter(resultado -> resultado.getDia() == DiaSemana.TERCA).sorted(Comparator.comparing(ResultadoDTO::getEscolha).reversed()).collect(Collectors.toList());
+        log.info("Escolhas na {}: {}.", DiaSemana.TERCA.getDescricao(), resTerca.size());
+        resultadosTratados = this.popularRetorno(resultadosTratados, resTerca);
+
+        List<ResultadoDTO> resQuarta = resultados.stream().filter(resultado -> resultado.getDia() == DiaSemana.QUARTA).sorted(Comparator.comparing(ResultadoDTO::getEscolha).reversed()).collect(Collectors.toList());
+        log.info("Escolhas na {}: {}.", DiaSemana.QUARTA.getDescricao(), resQuarta.size());
+        resultadosTratados = this.popularRetorno(resultadosTratados, resQuarta);
+
+        List<ResultadoDTO> resQuinta = resultados.stream().filter(resultado -> resultado.getDia() == DiaSemana.QUINTA).sorted(Comparator.comparing(ResultadoDTO::getEscolha).reversed()).collect(Collectors.toList());
+        log.info("Escolhas na {}: {}.", DiaSemana.QUINTA.getDescricao(), resQuinta.size());
+        resultadosTratados = this.popularRetorno(resultadosTratados, resQuinta);
+
+        List<ResultadoDTO> resSexta = resultados.stream().filter(resultado -> resultado.getDia() == DiaSemana.SEXTA).sorted(Comparator.comparing(ResultadoDTO::getEscolha).reversed()).collect(Collectors.toList());
+        log.info("Escolhas na {}: {}.", DiaSemana.SEXTA.getDescricao(), resSexta.size());
+        resultadosTratados = this.popularRetorno(resultadosTratados, resSexta);
+
+        log.info("Apresentando resultado final.");
+        return resultadosTratados;
+    }
+
+    private List<ResultadoDTO> popularRetorno(List<ResultadoDTO> resultadosTratados, List<ResultadoDTO> resultadoPorDia) {
+        if(!resultadoPorDia.isEmpty()) {
+            if(resultadosTratados.isEmpty()) {
+                resultadosTratados.add(resultadoPorDia.stream().findFirst().get());
+            } else {
+                resultadoPorDia.forEach(porDia -> {
+                    boolean contemNosResultados = resultadosTratados.stream().filter(tratado -> tratado.getIdRestaurante().equals(porDia.getIdRestaurante())).findAny().isPresent();
+                    if(!contemNosResultados) {
+                        resultadosTratados.add(porDia);
+                        return;
+                    }
+                });
+            }
+        }
+
+        return resultadosTratados;
     }
 }

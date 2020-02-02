@@ -18,9 +18,9 @@ class RestauranteController implements RestauranteApi {
     @Autowired
     private RestauranteService service;
 
-    @PostMapping("/escolher")
+    @PostMapping("/restaurante/escolher")
     @Override
-    public List<ResultadoDTO> escolherRestaurante(@RequestBody final List<EscolhaDTO> request) throws Exception {
+    public List<ResultadoDTO> escolherRestaurante(@RequestBody final List<EscolhaDTO> request) {
         return this.service.escolherRestaurante(request);
     }
 }

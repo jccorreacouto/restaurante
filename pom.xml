@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.dbserver</groupId>
 	<artifactId>restaurante</artifactId>
-	<version>0.1.0</version>
+	<version>1.0.0</version>
 	<name>restaurante</name>
 	<description>Restaurante project for Spring Boot</description>
 

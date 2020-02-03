@@ -19,7 +19,7 @@ public class RestauranteControllerTest {
     private RestauranteController controller;
 
     @Test
-    public void testAccessMethodEscolherRestaurante() {
+    public void testAccessMethodEscolherRestaurante() throws Exception {
         EscolhaDTO dto1 = EscolhaDTO.builder().matricula(11111L).nome("Funcionario 1").idRestaurante(11L).nomeRestaurante("Restaurante 1").dia(DiaSemana.SEGUNDA).build();
         EscolhaDTO dto2 = EscolhaDTO.builder().matricula(22222L).nome("Funcionario 2").idRestaurante(12L).nomeRestaurante("Restaurante 2").dia(DiaSemana.TERCA).build();
         EscolhaDTO dto3 = EscolhaDTO.builder().matricula(33333L).nome("Funcionario 3").idRestaurante(13L).nomeRestaurante("Restaurante 3").dia(DiaSemana.QUARTA).build();

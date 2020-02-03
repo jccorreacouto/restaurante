@@ -3,21 +3,22 @@ package br.com.dbserver.restaurante.service;
 import br.com.dbserver.restaurante.dto.EscolhaDTO;
 import br.com.dbserver.restaurante.dto.ResultadoDTO;
 import br.com.dbserver.restaurante.enumeration.DiaSemana;
+import br.com.dbserver.restaurante.enumeration.Mensagem;
 import br.com.dbserver.restaurante.util.DiaSemanaUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class RestauranteService {
 
-    public List<ResultadoDTO> escolherRestaurante(List<EscolhaDTO> request) {
+    public List<ResultadoDTO> escolherRestaurante(List<EscolhaDTO> request) throws Exception {
+
+        this.validarRequest(request);
 
         request = DiaSemanaUtil.validarVotosPorDia(request);
 
@@ -34,6 +35,26 @@ public class RestauranteService {
         });
 
         return this.tratarResultados(resultados);
+    }
+
+    private void validarRequest(List<EscolhaDTO> request) throws Exception {
+        for (EscolhaDTO dto : request) {
+            if(Objects.isNull(dto.getMatricula())) {
+                throw new Exception(Mensagem.ERROR_CAMPO_MATRICULA_OBRIGATORIO.getDescricao());
+            }
+            if(StringUtils.isEmpty(dto.getNome())) {
+                throw new Exception(Mensagem.ERROR_CAMPO_NOME_OBRIGATORIO.getDescricao());
+            }
+            if(Objects.isNull(dto.getIdRestaurante())) {
+                throw new Exception(Mensagem.ERROR_CAMPO_ID_RESTAURANTE_OBRIGATORIO.getDescricao());
+            }
+            if(StringUtils.isEmpty(dto.getNomeRestaurante())) {
+                throw new Exception(Mensagem.ERROR_CAMPO_NOME_RESTAURANTE_OBRIGATORIO.getDescricao());
+            }
+            if(Objects.isNull(dto.getDia())) {
+                throw new Exception(Mensagem.ERROR_CAMPO_DIA_OBRIGATORIO.getDescricao());
+            }
+        }
     }
 
     private List<ResultadoDTO> montarResultados(List<ResultadoDTO> resultados, DiaSemana diaSemana, String nomeRestaurante, Long idRestaurante) {

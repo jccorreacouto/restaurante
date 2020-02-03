@@ -20,7 +20,7 @@ class RestauranteController implements RestauranteApi {
 
     @PostMapping("/restaurante/escolher")
     @Override
-    public List<ResultadoDTO> escolherRestaurante(@RequestBody final List<EscolhaDTO> request) {
+    public List<ResultadoDTO> escolherRestaurante(@RequestBody final List<EscolhaDTO> request) throws Exception {
         return this.service.escolherRestaurante(request);
     }
 }

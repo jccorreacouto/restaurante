@@ -24,8 +24,6 @@
 		<!-- versions -->
 		<version.junit>4.12</version.junit>
 		<version.commons.lang.version>3.7</version.commons.lang.version>
-		<version.coveralls>4.3.0</version.coveralls>
-		<version.cobertura>2.7</version.cobertura>
 	</properties>
 
 	<dependencies>
@@ -52,7 +50,14 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- web -->
@@ -98,21 +103,20 @@
 			<plugin>
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>
-				<version>${version.coveralls}</version>
+				<version>4.3.0</version>
 				<configuration>
 					<repoToken>whsZSyl4VK3JVEDtuDzB9sqZT2dHr2IGx</repoToken>
+					<sourceEncoding>UTF8</sourceEncoding>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>${version.cobertura}</version>
+				<version>2.7</version>
 				<configuration>
+					<check>true</check>
 					<format>xml</format>
-					<maxmem>256m</maxmem>
-					<!-- aggregated reports for multi-module projects -->
 					<aggregate>true</aggregate>
-					<check/>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -2,6 +2,7 @@ package br.com.dbserver.restaurante.web;
 
 import br.com.dbserver.restaurante.dto.EscolhaDTO;
 import br.com.dbserver.restaurante.enumeration.DiaSemana;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class RestauranteControllerTest {
         EscolhaDTO dto4 = EscolhaDTO.builder().matricula(44444L).nome("Funcionario 4").idRestaurante(14L).nomeRestaurante("Restaurante 4").dia(DiaSemana.QUINTA).build();
         EscolhaDTO dto5 = EscolhaDTO.builder().matricula(55555L).nome("Funcionario 5").idRestaurante(15L).nomeRestaurante("Restaurante 5").dia(DiaSemana.SEXTA).build();
         List<EscolhaDTO> request = Arrays.asList(dto1, dto2, dto3, dto4, dto5);
-        this.controller.escolherRestaurante(request);
+        Assert.assertNotNull(this.controller.escolherRestaurante(request));
     }
 
 }

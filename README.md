@@ -12,7 +12,7 @@ Esse projeto propõe um sistema que auxilie nesta tomada de decisão!
 * IDE utilizada: IntelliJ IDEA 2019.3.2.
 * Linguagem de Programação Java, versão 8 (1.8.0_231), para desenvolvimento do código fonte.
 * Pacote Lombok, para anotações dos atributos e métodos das classes.
-* Framework Spring Boot (versão 2.2.3.RELEASE) e suas bibliotecas, para publicação e gerenciamento da aplicação.
+* Framework Spring Boot (versão 2.2.4.RELEASE) e suas bibliotecas, para publicação e gerenciamento da aplicação.
 * Junit 4, para criação dos testes unitários.
 
 ### Subindo o projeto
